@@ -1,0 +1,46 @@
+import Chat from "../models/Chat.js"
+
+
+// API  Controller for creating a new chat
+export const createChat = async (req, res) => {
+    try {
+        const userId = req.user._id
+
+        const chatData = {
+            userId,
+            messages: [],
+            name: "New Chat",
+            username: "req.user.name"
+        }
+
+        await Chat.create(chatData)
+        res.json({ success: true, message: "Chat Created"})
+    } catch (error) {
+        res.json({ success: false, error: error.message})
+    }
+}
+
+// API  Controller for creating a all chats
+export const getChats = async (req, res) => {
+    try {
+        const userId = req.user._id
+        const chats = await Chat.find({userId}).sort({ updatedAt: -1})  
+        
+        res.json({ success: true, chats})
+    } catch (error) {
+        res.json({ success: false, error: error.message})
+    }
+}
+
+// API Controller for deleting a chat
+export const deleteChats = async (req, res) => {
+    try {
+        const userId = req.user._id
+        const {chatId} = req.body
+        
+        await Chat.deleteOne({_id: chatId, userId})
+        res.json({ succes: true, message: "Chat Deleted"})        
+    } catch (error) {
+        res.json({ success: false, error: error.message})
+    }
+}
