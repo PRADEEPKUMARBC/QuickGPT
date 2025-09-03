@@ -39,8 +39,10 @@ export const deleteChats = async (req, res) => {
         const {chatId} = req.body
         
         await Chat.deleteOne({_id: chatId, userId})
-        res.json({ succes: true, message: "Chat Deleted"})        
+        res.json({ success: true, message: "Chat Deleted"})        
     } catch (error) {
         res.json({ success: false, error: error.message})
     }
 }
+
+
